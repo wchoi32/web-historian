@@ -2,6 +2,7 @@ var http = require('http');
 var url = require('url');
 var handler = require('./request-handler');
 var initialize = require('./initialize.js');
+var helpers = require('./http-helpers.js');
 
 
 // Why do you think we have this here?
@@ -13,17 +14,22 @@ var ip = '127.0.0.1';
 
 
 var router = {
-  '/': handler.handleRequest
+  '/': handler.handleRequest,
+  '/loading.html': handler.handleRequest,
+  //'/www.google.com': handler.handleRequest
 };
 
 //var server = http.createServer(handler.handleRequest);
 var server = http.createServer(function(req, res) {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
   var route = router[url.parse(req.url).pathname];
+  console.log(url.parse(req.url).pathname);
+  console.log(router);
   if (route) {
     route(req, res);
   } else {
-    //.sendResponse(res, '', 404);
+    res.writeHead(404, helpers.headers);
+    res.end();//.sendResponse(res, '', 404);
   }
 });
 
@@ -35,4 +41,5 @@ if (module.parent) {
   console.log('Listening on http://' + ip + ':' + port);
 }
 
+exports.router = router;
 

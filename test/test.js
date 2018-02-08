@@ -17,7 +17,7 @@ var request = supertest.agent(server);
 
 describe('server', function() {
   describe('GET /', function () {
-    it.only('should return the content of index.html', function (done) {
+    it('should return the content of index.html', function (done) {
       // just assume that if it contains an <input> tag its index.html
       request
         .get('/')

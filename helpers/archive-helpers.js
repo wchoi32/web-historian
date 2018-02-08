@@ -47,16 +47,23 @@ exports.readListOfUrls = function(callback) {
 
 exports.isUrlInList = function(url, callback) {
   let body = '';
+  
   //perform callback on url if url is in .txt?  
   fs.readFile(this.paths.list, (err, data) => {
-    if (err) { throw (err); }
+    if (err) { 
+      throw (err); 
+    }
     //console.log(data);//this is a buffer stream
     body += data;
+    //console.log(body);
     //console.log(body);//this is just a string
-    body = body.split('\n'); //splits by line break into array
-    //console.log(body);//gets the expected array back
+    var array = body.split('\n'); //splits by line break into array
+    //console.log(array);//gets the expected array back
     //console.log(body.indexOf(url));
-    if (body.indexOf(url) === -1) {
+    //console.log(url);
+    //console.log(array.indexOf(url));
+
+    if (array.indexOf(url) === -1) {
       callback(false);
     } else {
       callback(true);
@@ -67,7 +74,7 @@ exports.isUrlInList = function(url, callback) {
 exports.addUrlToList = function(url, callback) {
   //url is a string
   //perform the callback
-  fs.appendFile(this.paths.list, url, (err)=>{
+  fs.appendFile(this.paths.list, '\n' + url, (err)=>{
     if (err) { 
       throw err; 
     }
